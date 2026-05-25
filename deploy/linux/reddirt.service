@@ -1,0 +1,18 @@
+[Unit]
+Description=RedDirt-Tunes Musical Intelligence Client
+After=network.target
+Wants=reddirt-model.service
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/reddirt-tunes
+ExecStart=/opt/reddirt-tunes/target/release/reddirt-tunes
+Restart=always
+RestartSec=10
+Environment=REDdirT_MODEL_URL=http://127.0.0.1:8765
+Environment=REDDIRT_TIER=studio
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

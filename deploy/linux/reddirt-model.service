@@ -1,0 +1,18 @@
+[Unit]
+Description=RedDirt-Tunes Model Server (Python)
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/reddirt-tunes
+ExecStart=/usr/bin/python3 /opt/reddirt-tunes/training/model_server.py --backend ace-step --port 8765 --output-dir /opt/reddirt-tunes/.reddirt/output
+Restart=always
+RestartSec=10
+Environment=BACKEND=ace-step
+Environment=MODEL_ID=Amphion/ACE-Step-1.5B
+Environment=DEVICE=cuda
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

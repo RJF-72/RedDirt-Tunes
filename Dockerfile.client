@@ -1,0 +1,12 @@
+FROM rust:1.75-slim-bullseye AS builder
+
+WORKDIR /build
+COPY . .
+RUN cargo build --release
+
+FROM debian:bullseye-slim
+WORKDIR /app
+COPY --from=builder /build/target/release/reddirt-tunes /app/
+ENV PATH="/app:$PATH"
+ENV REDDIRT_MODEL_URL=http://reddirt-model:8765
+CMD ["/app/reddirt-tunes"]

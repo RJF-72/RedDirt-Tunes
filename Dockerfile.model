@@ -1,0 +1,25 @@
+FROM nvidia/cuda:11.8.0-cudnn8-runtime-ubuntu22.04
+
+WORKDIR /app
+
+# System deps
+RUN apt-get update && apt-get install -y \
+    python3 python3-pip curl \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY training/model_server.py training/requirements.txt /app/
+
+RUN pip3 install --no-cache-dir -r requirements.txt
+
+EXPOSE 8765
+
+ENV BACKEND=ace-step
+ENV MODEL_ID=Amphion/ACE-Step-1.5B
+ENV PORT=8765
+
+VOLUME ["/app/.reddirt/models", "/app/.reddirt/output"]
+
+HEALTHCHECK --interval=30s --timeout=10s --start-period=120s \
+    CMD curl -f http://localhost:8765/health || exit 1
+
+CMD ["python3", "/app/model_server.py", "--backend", "${BACKEND}", "--model-id", "${MODEL_ID}", "--port", "${PORT}", "--output-dir", "/app/.reddirt/output"]

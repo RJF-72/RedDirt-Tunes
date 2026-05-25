@@ -1,0 +1,59 @@
+# RedDirt-Tunes Full Deployment Stack
+# Pulls and runs the Python model server as a Docker service.
+# The Rust client auto-discovers it on port 8765.
+
+version: '3.8'
+
+services:
+  reddirt-model:
+    build:
+      context: .
+      dockerfile: Dockerfile.model
+    image: reddirt-tunes/model:latest
+    container_name: reddirt-model
+    ports:
+      - "8765:8765"
+    environment:
+      - BACKEND=ace-step
+      - MODEL_ID=Amphion/ACE-Step-1.5B
+      - PORT=8765
+      - DEVICE=cuda  # auto-detected
+    volumes:
+      - reddirt-models:/app/.reddirt/models
+      - reddirt-output:/app/.reddirt/output
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8765/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  reddirt-client:
+    build:
+      context: .
+      dockerfile: Dockerfile.client
+    image: reddirt-tunes/client:latest
+    container_name: reddirt-client
+    depends_on:
+      reddirt-model:
+        condition: service_healthy
+    environment:
+      - REDDIRT_MODEL_URL=http://reddirt-model:8765
+      - REDDIRT_TIER=studio
+    volumes:
+      - reddirt-output:/app/.reddirt/output
+    stdin_open: true
+    tty: true
+    restart: unless-stopped
+
+volumes:
+  reddirt-models:
+  reddirt-output:
