@@ -5,5 +5,7 @@ edition = "2021"
 
 [dependencies]
 serde = { workspace = true }
+serde_json = { workspace = true }
 anyhow = { workspace = true }
+ureq = { version = "2", features = ["json"] }
 reddirt_capability = { path = "../reddirt_capability" }
