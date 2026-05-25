@@ -99,7 +99,7 @@ When you ask RedDirt to "sing," the vocal synthesis engine loads a vocoder model
 | DiffSinger (full) | When "sing" mode triggered | **+2.5 GB** | Best |
 | N-Singer (medium) | When "sing" mode triggered | **+1.2 GB** | Good |
 | Onnx vocoder (light) | When "sing" mode triggered | **+500 MB** | Fair |
-| **Placeholder sine (stub)** | On every "sing" → generates sine | **0 MB** | Basic |
+| **Silent placeholder** | On every "sing" → returns zeros | **0 MB** | No sound until external vocoder added |
 
 **Current status:** Stub only (sine wave placeholder). When real vocoder is added:
 - Mobile tier → 500 MB Onnx or skip

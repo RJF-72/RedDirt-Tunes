@@ -2,13 +2,16 @@ use std::path::Path;
 
 /// Singing Vocal Synthesis Engine
 /// Takes lyrics, melody, and emotion parameters and produces a sung audio buffer.
+/// NOTE: This is an API facade only. Real vocal rendering is delegated to an external
+/// neural vocoder backend (DiffSinger, N-Singer, etc.). The render function returns silence
+/// until a real backend is plugged in.
 pub struct VocalSynthesizer;
 
 #[derive(Debug, Clone)]
 pub struct VocalParams {
     pub pitch_hz: f32,
     pub duration_ms: u32,
-    pub velocity: f32, // 0.0 - 1.0
+    pub velocity: f32,
     pub vibrato_rate: f32,
     pub vibrato_depth: f32,
     pub breathiness: f32,
@@ -26,7 +29,7 @@ pub struct SungPhoneme {
 pub struct VocalTrack {
     pub phonemes: Vec<SungPhoneme>,
     pub singer_id: String,
-    pub emotion: String, // happy, sad, angry, neutral
+    pub emotion: String,
 }
 
 #[derive(Debug, Clone)]
@@ -42,23 +45,17 @@ impl VocalSynthesizer {
         Self
     }
 
-    /// Render a vocal track from phonemes.
-    /// In production, this calls a neural singing model (e.g. DiffSinger, N-Singer, or ONNX-based)
-    pub fn render(&self, track: &VocalTrack) -> Result<RenderedVocal, VocalError> {
-        // Stub: calculate total duration from phonemes
+    /// Render a vocal track.
+    /// Currently returns silence — a neural vocoder backend must be plugged in for actual sound.
+    pub fn render(&self,
+        track: &VocalTrack,
+    ) -> Result<RenderedVocal, VocalError> {
         let total_ms: u32 = track.phonemes.iter().map(|p| p.params.duration_ms).sum();
         let sample_rate = 48000u32;
         let total_samples = ((total_ms as f32 / 1000.0) * sample_rate as f32) as usize;
 
-        // Generate silence (stub). In production: synthesize actual audio.
-        let mut buf = vec![0.0f32; total_samples];
-
-        // Add a simple sine carrier as placeholder proof-of-sound
-        for (i, sample) in buf.iter_mut().enumerate() {
-            let t = i as f32 / sample_rate as f32;
-            // A3 = 220Hz as placeholder pitch
-            *sample = (t * 220.0 * 2.0 * std::f32::consts::PI).sin() * 0.3;
-        }
+        // Silence buffer. Real audio comes from an external vocoder (DiffSinger, N-Singer, etc.).
+        let buf = vec![0.0f32; total_samples];
 
         Ok(RenderedVocal {
             samples_l: buf.clone(),
@@ -69,11 +66,11 @@ impl VocalSynthesizer {
     }
 
     /// Auto-tune / pitch-correct a rendered vocal.
-    pub fn pitch_correct(&self,
+    pub fn pitch_correct(
+        &self,
         vocal: &mut RenderedVocal,
         target_key: &str,
     ) {
-        // Stub: in production, apply pitch correction algorithm
         println!("[vocal] Pitch correcting to key: {}", target_key);
     }
 }
@@ -109,6 +106,8 @@ fn test_vocal_synth() {
         emotion: "sad".into(),
     };
     let result = synth.render(&track).unwrap();
-    assert!(result.samples_l.len() > 0);
+    // Buffer is silence until real vocoder is plugged in
+    assert_eq!(result.samples_l.len(), 24_000); // 500ms at 48kHz
     assert_eq!(result.sample_rate, 48000);
+    assert!(result.samples_l.iter().all(|s| *s == 0.0));
 }
