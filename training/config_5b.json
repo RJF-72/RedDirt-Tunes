@@ -1,0 +1,52 @@
+{
+  "model_name_or_path": "redpajama/RedPajama-INCITE-Base-5B-v1",
+  "output_dir": ".reddirt/models/RedDirt-5B",
+  "num_train_epochs": 3,
+  "per_device_train_batch_size": 2,
+  "gradient_accumulation_steps": 4,
+  "learning_rate": 1e-5,
+  "warmup_steps": 150,
+  "weight_decay": 0.01,
+  "logging_steps": 10,
+  "save_steps": 500,
+  "save_total_limit": 3,
+  "bf16": false,
+  "fp16": true,
+  "dataloader_num_workers": 2,
+  "remove_unused_columns": false,
+  "report_to": ["none"],
+  "lora_r": 128,
+  "lora_alpha": 256,
+  "lora_dropout": 0.05,
+  "target_modules": ["q_proj", "k_proj", "v_proj", "o_proj", "gate_proj", "up_proj", "down_proj"],
+  "modules_to_save": ["embed_tokens", "lm_head"],
+  "quantization": {
+    "load_in_8bit": false,
+    "load_in_4bit": true,
+    "bnb_4bit_compute_dtype": "float16",
+    "bnb_4bit_use_double_quant": true,
+    "bnb_4bit_quant_type": "nf4"
+  },
+  "data_files": {
+    "train": ".reddirt/models/student_data/distill_train.jsonl",
+    "validation": ".reddirt/models/student_data/distill_val.jsonl"
+  },
+  "max_seq_length": 4096,
+  "packing": true,
+  "neftune_noise_alpha": 5,
+  "weighted_loss": true,
+  "weight_map": {
+    "chord_json": 2.0,
+    "melody_tokens": 2.5,
+    "arrangement_plan": 1.5,
+    "stem_json": 1.2,
+    "nlu": 1.0,
+    "nlp": 0.8,
+    "mix_params": 0.5,
+    "lyric": 1.0
+  },
+  "teacher_temperature": 1.0,
+  "distill_alpha": 0.7,
+  "gradient_checkpointing": true,
+  "deepspeed": null
+}
