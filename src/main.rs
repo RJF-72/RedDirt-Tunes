@@ -218,7 +218,7 @@ fn main() {
             _ => "⚠ Needs work",
         }
     );
-    println!("Status:   {}", if VicoderBackend::is_available() && VocalSynthesis::is_real() {
+    println!("Status:   {}", if VocoderBackend::is_available() && VocalSynthesizer::is_real() {
         "PRODUCTION-READY"
     } else {
         "FRAMEWORK-READY (add vocoder server for real singing)"

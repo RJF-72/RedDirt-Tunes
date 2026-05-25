@@ -1,0 +1,129 @@
+{
+  "title": "sad",
+  "description": "Generate a sad acoustic ballad about rain, key A minor, tempo 65, with stem separation and radio-ready mastering",
+  "global_key": "A minor",
+  "global_tempo": 65,
+  "sections": [
+    {
+      "name": "Intro",
+      "kind": "intro",
+      "duration_bars": 8,
+      "key": "A minor",
+      "tempo": 65,
+      "emotion": {
+        "valence": -0.2,
+        "arousal": 0.3,
+        "tension": 0.4,
+        "dominance": 0.3,
+        "emotion_tag": "contemplative"
+      },
+      "lyrics": "",
+      "stems": {},
+      "melody_notes": [],
+      "chord_progression": []
+    },
+    {
+      "name": "Verse 1",
+      "kind": "verse",
+      "duration_bars": 16,
+      "key": "A minor",
+      "tempo": 65,
+      "emotion": {
+        "valence": -0.5,
+        "arousal": 0.2,
+        "tension": 0.3,
+        "dominance": 0.2,
+        "emotion_tag": "longing"
+      },
+      "lyrics": "",
+      "stems": {},
+      "melody_notes": [],
+      "chord_progression": []
+    },
+    {
+      "name": "Chorus",
+      "kind": "chorus",
+      "duration_bars": 16,
+      "key": "A minor",
+      "tempo": 65,
+      "emotion": {
+        "valence": -0.1,
+        "arousal": 0.7,
+        "tension": 0.8,
+        "dominance": 0.8,
+        "emotion_tag": "yearning"
+      },
+      "lyrics": "",
+      "stems": {},
+      "melody_notes": [],
+      "chord_progression": []
+    },
+    {
+      "name": "Verse 2",
+      "kind": "verse",
+      "duration_bars": 16,
+      "key": "A minor",
+      "tempo": 65,
+      "emotion": {
+        "valence": -0.6,
+        "arousal": 0.3,
+        "tension": 0.5,
+        "dominance": 0.3,
+        "emotion_tag": "despair"
+      },
+      "lyrics": "",
+      "stems": {},
+      "melody_notes": [],
+      "chord_progression": []
+    },
+    {
+      "name": "Chorus (final)",
+      "kind": "chorus",
+      "duration_bars": 16,
+      "key": "A minor",
+      "tempo": 65,
+      "emotion": {
+        "valence": -0.1,
+        "arousal": 0.8,
+        "tension": 0.9,
+        "dominance": 0.9,
+        "emotion_tag": "release"
+      },
+      "lyrics": "",
+      "stems": {},
+      "melody_notes": [],
+      "chord_progression": []
+    },
+    {
+      "name": "Outro",
+      "kind": "outro",
+      "duration_bars": 8,
+      "key": "A minor",
+      "tempo": 65,
+      "emotion": {
+        "valence": -0.3,
+        "arousal": 0.1,
+        "tension": 0.1,
+        "dominance": 0.1,
+        "emotion_tag": "resolved"
+      },
+      "lyrics": "",
+      "stems": {},
+      "melody_notes": [],
+      "chord_progression": []
+    }
+  ],
+  "mix": {
+    "master_volume_db": 0.0,
+    "master_pan": 0.0,
+    "target_lufs": -14.0,
+    "true_peak_limit": -1.0,
+    "per_stem": {}
+  },
+  "emotions": {
+    "overall_mood": "melancholic",
+    "emotional_journey": [],
+    "climax_position": 0.72,
+    "resolution_present": true
+  }
+}
