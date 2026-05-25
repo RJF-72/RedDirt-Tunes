@@ -163,7 +163,27 @@ fn main() {
 
     // 11. MASTERING
     println!("\n[MASTER] Radio-ready mastering to -14 LUFS...");
-    let mixed = if let Some(buf) = placeholder_vocal {
+    let mixed = if let Some(ref path) = vocal_path {
+        println!("[MASTER] Loading vocal WAV: {}", path);
+        match reddirt_vocals::VocalSynthesizer::load_wav(path, 48000) {
+            Ok(vocal) => {
+                println!("[MASTER] Loaded: {} samples", vocal.samples_l.len());
+                RenderedTrack {
+                    samples_l: vocal.samples_l,
+                    samples_r: vocal.samples_r,
+                    sample_rate: vocal.sample_rate,
+                }
+            }
+            Err(e) => {
+                println!("[MASTER] Failed to load vocal, falling back to empty: {}", e);
+                RenderedTrack {
+                    samples_l: vec![],
+                    samples_r: vec![],
+                    sample_rate: gen_result.sample_rate,
+                }
+            }
+        }
+    } else if let Some(buf) = placeholder_vocal {
         RenderedTrack {
             samples_l: buf.clone(),
             samples_r: buf,

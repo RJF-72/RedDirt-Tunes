@@ -29,6 +29,7 @@ struct SingMetadata {
     lyrics: String,
     singer: String,
     emotion: String,
+    #[serde(default)]
     num_notes: usize,
 }
 
