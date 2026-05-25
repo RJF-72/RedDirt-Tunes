@@ -1,0 +1,47 @@
+[package]
+name = "reddirt-tunes"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+serde_json = { workspace = true }
+reddirt_capability = { path = "crates/reddirt_capability" }
+reddirt_driver = { path = "crates/reddirt_driver" }
+reddirt_inference = { path = "crates/reddirt_inference" }
+reddirt_mmie = { path = "crates/reddirt_mmie" }
+reddirt_physical_model = { path = "crates/reddirt_physical_model" }
+reddirt_stem = { path = "crates/reddirt_stem" }
+reddirt_nlp = { path = "crates/reddirt_nlp" }
+reddirt_vocals = { path = "crates/reddirt_vocals" }
+reddirt_master = { path = "crates/reddirt_master" }
+
+[workspace]
+members = [
+  "crates/reddirt_common",
+  "crates/reddirt_capability",
+  "crates/reddirt_driver",
+  "crates/reddirt_inference",
+  "crates/reddirt_physical_model",
+  "crates/reddirt_mmie",
+  "crates/reddirt_stem",
+  "crates/reddirt_nlp",
+  "crates/reddirt_vocals",
+  "crates/reddirt_master",
+  "ui",
+]
+resolver = "2"
+
+[workspace.dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+uuid = { version = "1", features = ["v4", "serde"] }
+thiserror = "1"
+anyhow = "1"
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+
+[profile.dev]
+opt-level = 0

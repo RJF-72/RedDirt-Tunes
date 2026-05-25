@@ -1,0 +1,10 @@
+[package]
+name = "reddirt_stem"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+serde = { workspace = true }
+thiserror = { workspace = true }
+anyhow = { workspace = true }
+reddirt_capability = { path = "../reddirt_capability" }

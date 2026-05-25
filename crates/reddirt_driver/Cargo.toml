@@ -1,0 +1,11 @@
+[package]
+name = "reddirt_driver"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+serde = { workspace = true }
+serde_json = { workspace = true }
+reddirt_capability = { path = "../reddirt_capability" }
+reddirt_physical_model = { path = "../reddirt_physical_model" }
+reddirt_nlp = { path = "../reddirt_nlp" }

@@ -1,0 +1,9 @@
+[package]
+name = "reddirt_vocals"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+serde = { workspace = true }
+thiserror = { workspace = true }
+reddirt_capability = { path = "../reddirt_capability" }

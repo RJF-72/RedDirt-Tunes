@@ -1,0 +1,10 @@
+[package]
+name = "reddirt_mmie"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+serde = { workspace = true }
+thiserror = { workspace = true }
+reddirt_physical_model = { path = "../reddirt_physical_model" }
+reddirt_capability = { path = "../reddirt_capability" }
