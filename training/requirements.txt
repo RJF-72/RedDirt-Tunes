@@ -3,4 +3,6 @@ transformers>=4.35.0
 accelerate>=0.24.0
 soundfile>=0.12.1
 flask>=2.3.0
+cog==0.9.4
 scipy>=1.10.0
+numpy>=1.24.0

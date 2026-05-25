@@ -161,35 +161,67 @@ fn main() {
         None
     };
 
-    // 11. MASTERING
+    // 11. MASTERING — mix instrumental + vocals, then master
     println!("\n[MASTER] Radio-ready mastering to -14 LUFS...");
-    let mixed = if let Some(ref path) = vocal_path {
-        println!("[MASTER] Loading vocal WAV: {}", path);
-        match reddirt_vocals::VocalSynthesizer::load_wav(path, 48000) {
-            Ok(vocal) => {
-                println!("[MASTER] Loaded: {} samples", vocal.samples_l.len());
-                RenderedTrack {
-                    samples_l: vocal.samples_l,
-                    samples_r: vocal.samples_r,
-                    sample_rate: vocal.sample_rate,
-                }
-            }
+    let mixed = if let Some(ref vpath) = vocal_path {
+        println!("[MASTER] Loading vocal WAV: {}", vpath);
+        let vocal = match reddirt_vocals::VocalSynthesizer::load_wav(vpath, 48000) {
+            Ok(v) => v,
             Err(e) => {
-                println!("[MASTER] Failed to load vocal, falling back to empty: {}", e);
-                RenderedTrack {
+                println!("[MASTER] Failed to load vocal: {}. Using empty.", e);
+                reddirt_vocals::RenderedVocal {
                     samples_l: vec![],
                     samples_r: vec![],
-                    sample_rate: gen_result.sample_rate,
+                    sample_rate: 48000,
+                    duration_ms: 0,
                 }
             }
+        };
+        println!("[MASTER] Loading instrumental WAV: {}", gen_result.audio_path);
+        let inst = match reddirt_vocals::VocalSynthesizer::load_wav(&gen_result.audio_path, 48000) {
+            Ok(i) => i,
+            Err(e) => {
+                println!("[MASTER] Failed to load instrumental: {}. Using vocal only.", e);
+                reddirt_vocals::RenderedVocal {
+                    samples_l: vec![],
+                    samples_r: vec![],
+                    sample_rate: 48000,
+                    duration_ms: 0,
+                }
+            }
+        };
+
+        // Align lengths and mix
+        let target_len = vocal.samples_l.len().max(inst.samples_l.len());
+        let mut mix_l = vec![0.0f32; target_len];
+        let mut mix_r = vec![0.0f32; target_len];
+
+        for i in 0..vocal.samples_l.len() {
+            mix_l[i] += vocal.samples_l[i] * 0.7;  // vocal slightly louder
+            mix_r[i] += vocal.samples_r[i] * 0.7;
+        }
+        for i in 0..inst.samples_l.len() {
+            mix_l[i] += inst.samples_l[i] * 0.85; // instrumental backing
+            mix_r[i] += inst.samples_r[i] * 0.85;
+        }
+
+        println!("[MASTER] Mixed: {} samples (vocal={} + inst={})", target_len,
+            vocal.samples_l.len(), inst.samples_l.len()
+        );
+        RenderedTrack {
+            samples_l: mix_l,
+            samples_r: mix_r,
+            sample_rate: 48000,
         }
     } else if let Some(buf) = placeholder_vocal {
+        println!("[MASTER] No vocal backend — mastering vocal-only (silence)");
         RenderedTrack {
             samples_l: buf.clone(),
             samples_r: buf,
             sample_rate: 48000,
         }
     } else {
+        println!("[MASTER] No audio sources — empty track");
         RenderedTrack {
             samples_l: vec![],
             samples_r: vec![],
