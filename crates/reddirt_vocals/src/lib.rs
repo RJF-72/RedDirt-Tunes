@@ -65,15 +65,21 @@ impl VocalSynthesizer {
         })
     }
 
-    /// Auto-tune / pitch-correct a rendered vocal.
-    pub fn pitch_correct(
-        &self,
-        vocal: &mut RenderedVocal,
-        target_key: &str,
-    ) {
-        println!("[vocal] Pitch correcting to key: {}", target_key);
+    /// Return a silent buffer of a given duration in ms.
+    pub fn render_silence(&self, duration_ms: u32
+    ) -> Vec<f32> {
+        let sample_rate = 48000u32;
+        let total_samples = ((duration_ms as f32 / 1000.0) * sample_rate as f32) as usize;
+        vec![0.0f32; total_samples]
+    }
+
+    /// Check if a real vocoder backend (not local silence) is available.
+    pub fn is_real() -> bool {
+        crate::backend::VocoderBackend::is_available()
     }
 }
+
+pub mod backend;
 
 #[derive(Debug, thiserror::Error)]
 pub enum VocalError {

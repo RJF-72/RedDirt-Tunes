@@ -1742,9 +1742,12 @@ dependencies = [
 name = "reddirt_vocals"
 version = "0.1.0"
 dependencies = [
+ "anyhow",
  "reddirt_capability",
  "serde",
+ "serde_json",
  "thiserror 1.0.69",
+ "ureq",
 ]
 
 [[package]]
